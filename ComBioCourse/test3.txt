@@ -1,3 +1,0 @@
-this is for 
-git rm 
-when commited
