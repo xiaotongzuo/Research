@@ -2,9 +2,7 @@
 
 ---
 ###The Pilus Carbohydrates Modeling Project. 
-<dl>
-<dd style="text-align:right"> --by Xiaotong Zuo, Aug. 2015 - Feb. 2016 </dd>
-</dl>
+⋅⋅⋅ --by Xiaotong Zuo, Aug. 2015 - Feb. 2016
 ---
 ###Introduction
 
@@ -21,4 +19,4 @@ The glycans attached to PilA ACICU and M2 were modeled using [__PyRosetta__](htt
 
 With this protocol, 6000 structures of PilA ACICU and 6000 structures of PilA M2 were generated.
 
-<center>（revised on 02/16/2016）</center>
+(revised on 02/16/2016)
