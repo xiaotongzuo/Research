@@ -17,4 +17,6 @@ The glycans attached to PilA ACICU and M2 were modeled using [__PyRosetta__](htt
 
 With this protocol, 6000 structures of PilA ACICU and 6000 structures of PilA M2 were generated.
 
+---
+
 (revised on 02/16/2016)
