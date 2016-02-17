@@ -18,6 +18,6 @@ The glycans attached to PilA ACICU and M2 were modeled using [__PyRosetta__](htt
 
 2. The structures were then refined in the high-resolution part by applying a more precise perturbation of the torsion angles, the side-chain packing and the minimization. 
 
-```With this protocol, 6000 structures of PilA ACICU and 6000 structures of PilA M2 were generated.
+With this protocol, 6000 structures of PilA ACICU and 6000 structures of PilA M2 were generated.
 
-
+                                          （revised on 02/16/2016）
