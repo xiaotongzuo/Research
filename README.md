@@ -2,7 +2,7 @@
 
 ---
 ###The Pilus Carbohydrates Modeling Project. 
-<h3 style="text-align:right">--by Xiaotong Zuo, Aug. 2015 - Feb. 2016<h3>
+<h5 style="text-align:right"> --by Xiaotong Zuo, Aug. 2015 - Feb. 2016 <h5>
 
 ---
 ###Introduction
