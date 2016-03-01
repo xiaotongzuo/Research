@@ -1,10 +1,15 @@
 #!/usr/bin/env python
-''' This file is for Homework 4, Problem 4.
-    Please input your pose name(like 1B72), or the number of aa and aa name(like 10, A), and the number of decoys.
+''' This file is for CompBio Homework 4, Problem 4.
+    Please input your:
+    1. pose name(like 1B72), or the number of aa and aa name(like 10, A), 
+    2. the number of decoys.
     Examples:
     python HW4_4.py 10  A  100
     python HW4_4.py 1B72 100
-    Xiaotong Zuo, Feb. 24'''
+    
+    it will output a text file called 'torsion_angles.txt'
+    
+    --Xiaotong Zuo, Feb. 24'''
 # import
 from rosetta import *
 init(notebook=True)
@@ -25,6 +30,7 @@ scorefxn.set_weight(hbond_sc,1.1)
 
 
 def torsion_mover(pose):
+    '''randomly choose a residue and change its torsion angle randomly.'''
     global score
     score=scorefxn(pose)
     global old_score
@@ -46,6 +52,7 @@ def torsion_mover(pose):
     return pose
 
 def score_pose(pose):
+    '''after a move is made, score the pose and do Monte Carlo'''
     # Scoring
     score=scorefxn(pose)
     delta_E=score-old_score
@@ -57,6 +64,7 @@ def score_pose(pose):
     return pose
 
 def check_input(args):
+    '''check the inputs, and create initial pose.'''
     #checking input
     print args
     if len(args)==3:
@@ -81,6 +89,7 @@ def check_input(args):
 
 
 def main(args):
+    '''main function, generate decoys and output a torsion angle txt file.'''
     #pose_name, number_of_decoys, num_of_iterations=200
     pose=Pose()
     global save_pose
