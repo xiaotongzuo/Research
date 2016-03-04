@@ -7,7 +7,7 @@ from rosetta import *
 init(extra_options='-include_sugars -override_rsd_type_limit -read_pdb_link_records -write_pdb_link_records')
 
 ##### Things can be changed
-#initial_pose=pose_from_pdb('/Users/XT/Dropbox/Project/pilus_monomer_repacking_delH.pdb')   # change file dir
+#initial_pose=pose_from_file('/Users/XT/Dropbox/M2dimer_repacking.pdb')   # change file dir
 initial_pose=pose_from_pdb('/home/Xiaotong/jazz_home/M2dimer_repacking.pdb')
 
 scorefxn=get_fa_scorefxn()
@@ -48,24 +48,24 @@ mc_inner_core=MonteCarlo(pose,scorefxn,1)
 mc_outer_refine=MonteCarlo(pose,scorefxn,1)
 mc_mid_refine=MonteCarlo(pose,scorefxn,1)
 mc_inner_refine=MonteCarlo(pose,scorefxn,1)
+# task_pack
+task_pack=standard_packer_task(pose)
+task_pack.restrict_to_repacking()
+task_pack.temporarily_fix_everything()
+for resi in range (tail_start,sugar_end+1):
+    task_pack.temporarily_set_pack_residue(resi,True)
 #####
 
 ###########
 def pack_mover_min_renew_taskpack(pose):   # meaningless for sugars, recalculate
-    for resi in range(tail_start,tail_end-1):# repacking    3%    ###### add 1 residue, 3 resi now
-        task_pack=standard_packer_task(pose)
-        task_pack.restrict_to_repacking()
-        task_pack.temporarily_fix_everything()
-        task_pack.temporarily_set_pack_residue(resi,True)
-        task_pack.temporarily_set_pack_residue(resi+1,True)
-        task_pack.temporarily_set_pack_residue(resi+2,True)
+    for resi in range(tail_start,tail_end+1):# repacking    3%    ###### add 1 residue, 3 resi now
         pack_mover=PackRotamersMover(scorefxn,task_pack)
         pack_mover.apply(pose)
         global mc_outer_refine
         mc_outer_refine.boltzmann(pose)
 
 def rotamer_trials_renew_taskpack(pose):
-    for resi in range (tail_start,sugar_end-1):  # turn on 128~140
+    for resi in range (tail_start,sugar_end+1):  # turn on 128~140
         smallmover.apply(pose)
         shearmover.apply(pose)
         current_angle=pose.omega(sugar_start)
@@ -73,12 +73,6 @@ def rotamer_trials_renew_taskpack(pose):
         pose.set_omega(sugar_start,new_angle)   # set a new angle
         global mc_inner_refine
         mc_inner_refine.boltzmann(pose)
-        task_pack=standard_packer_task(pose)
-        task_pack.restrict_to_repacking()
-        task_pack.temporarily_fix_everything()
-        task_pack.temporarily_set_pack_residue(resi,True)
-        task_pack.temporarily_set_pack_residue(resi+1,True)
-        task_pack.temporarily_set_pack_residue(resi+2,True)
         # Rotamer Trials
         rotamer_trials=RotamerTrialsMover(scorefxn,task_pack)
         rotamer_trials.apply(pose)
