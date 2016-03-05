@@ -49,20 +49,17 @@ mc_inner_core=MonteCarlo(pose,scorefxn,1)
 mc_outer_refine=MonteCarlo(pose,scorefxn,1)
 mc_mid_refine=MonteCarlo(pose,scorefxn,1)
 mc_inner_refine=MonteCarlo(pose,scorefxn,1)
-
-task_pack=standard_packer_task(pose)
-task_pack.restrict_to_repacking()
-task_pack.temporarily_fix_everything()
-for resi in range (tail_start,tail_mid):
-    task_pack.temporarily_set_pack_residue(resi,True)
-for resi in range (tail_mid+1,sugar_end+1):
-    task_pack.temporarily_set_pack_residue(resi,True)
 #####
 
 ###########
 def pack_mover_min_renew_taskpack(pose):   # meaningless for sugars, recalculate
     for resi in range(tail_start,tail_end):# repacking    3%
         if resi != tail_mid and resi+1 !=tail_mid:   # 17 cycles, 109-127!
+            task_pack=standard_packer_task(pose)
+            task_pack.restrict_to_repacking()
+            task_pack.temporarily_fix_everything()
+            task_pack.temporarily_set_pack_residue(resi,True)
+            task_pack.temporarily_set_pack_residue(resi+1,True)
             pack_mover=PackRotamersMover(scorefxn,task_pack)
             pack_mover.apply(pose)
             global mc_outer_refine
@@ -81,6 +78,11 @@ def rotamer_trials_renew_taskpack(pose):
             global mc_inner_refine
             mc_inner_refine.boltzmann(pose)
             # Rotamer Trials
+            task_pack=standard_packer_task(pose)
+            task_pack.restrict_to_repacking()
+            task_pack.temporarily_fix_everything()
+            task_pack.temporarily_set_pack_residue(resi,True)
+            task_pack.temporarily_set_pack_residue(resi+1,True)
             rotamer_trials=RotamerTrialsMover(scorefxn,task_pack)
             rotamer_trials.apply(pose)
             mc_inner_refine.boltzmann(pose)

@@ -48,24 +48,24 @@ mc_inner_core=MonteCarlo(pose,scorefxn,1)
 mc_outer_refine=MonteCarlo(pose,scorefxn,1)
 mc_mid_refine=MonteCarlo(pose,scorefxn,1)
 mc_inner_refine=MonteCarlo(pose,scorefxn,1)
-# task_pack
-task_pack=standard_packer_task(pose)
-task_pack.restrict_to_repacking()
-task_pack.temporarily_fix_everything()
-for resi in range (tail_start,sugar_end+1):
-    task_pack.temporarily_set_pack_residue(resi,True)
 #####
 
 ###########
 def pack_mover_min_renew_taskpack(pose):   # meaningless for sugars, recalculate
-    for resi in range(tail_start,tail_end+1):# repacking    3%    ###### add 1 residue, 3 resi now
+    for resi in range(tail_start,tail_end-1):# repacking    3%    ###### add 1 residue, 3 resi now
+        task_pack=standard_packer_task(pose)
+        task_pack.restrict_to_repacking()
+        task_pack.temporarily_fix_everything()
+        task_pack.temporarily_set_pack_residue(resi,True)
+        task_pack.temporarily_set_pack_residue(resi+1,True)
+        task_pack.temporarily_set_pack_residue(resi+2,True)
         pack_mover=PackRotamersMover(scorefxn,task_pack)
         pack_mover.apply(pose)
         global mc_outer_refine
         mc_outer_refine.boltzmann(pose)
 
 def rotamer_trials_renew_taskpack(pose):
-    for resi in range (tail_start,sugar_end+1):  # turn on 128~140
+    for resi in range (tail_start,sugar_end-1):  # turn on 128~140
         smallmover.apply(pose)
         shearmover.apply(pose)
         current_angle=pose.omega(sugar_start)
@@ -74,6 +74,13 @@ def rotamer_trials_renew_taskpack(pose):
         global mc_inner_refine
         mc_inner_refine.boltzmann(pose)
         # Rotamer Trials
+        task_pack=standard_packer_task(pose)
+        task_pack.restrict_to_repacking()
+        task_pack.temporarily_fix_everything()
+        task_pack.temporarily_set_pack_residue(resi,True)
+        task_pack.temporarily_set_pack_residue(resi+1,True)
+        task_pack.temporarily_set_pack_residue(resi+2,True)
+        pack_mover=PackRotamersMover(scorefxn,task_pack)
         rotamer_trials=RotamerTrialsMover(scorefxn,task_pack)
         rotamer_trials.apply(pose)
         mc_inner_refine.boltzmann(pose)
@@ -110,7 +117,7 @@ while not jd.job_complete:
         max_angle=max_angle/2
         ## mc.show...
         
-    '''## 2. max angle for shear mover: 8 degree
+    ## 2. max angle for shear mover: 8 degree
     max_angle=4
     shearmover.angle_max('L',max_angle)    # loop for sugar
     smallmover.angle_max('L',max_angle)
@@ -129,7 +136,7 @@ while not jd.job_complete:
             mc_mid_refine.boltzmann(pose)
         pack_mover_min_renew_taskpack(pose)
         minmover.apply(pose)
-        mc_outer_refine.boltzmann(pose)'''
+        mc_outer_refine.boltzmann(pose)
     jd.output_decoy(pose)
 print "done"
 

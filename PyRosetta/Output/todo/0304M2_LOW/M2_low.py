@@ -110,7 +110,7 @@ while not jd.job_complete:
         max_angle=max_angle/2
         ## mc.show...
         
-    ## 2. max angle for shear mover: 8 degree
+    '''## 2. max angle for shear mover: 8 degree
     max_angle=4
     shearmover.angle_max('L',max_angle)    # loop for sugar
     smallmover.angle_max('L',max_angle)
@@ -129,7 +129,7 @@ while not jd.job_complete:
             mc_mid_refine.boltzmann(pose)
         pack_mover_min_renew_taskpack(pose)
         minmover.apply(pose)
-        mc_outer_refine.boltzmann(pose)
+        mc_outer_refine.boltzmann(pose)'''
     jd.output_decoy(pose)
 print "done"
 
