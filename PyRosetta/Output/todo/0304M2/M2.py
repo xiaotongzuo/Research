@@ -137,6 +137,7 @@ while not jd.job_complete:
         pack_mover_min_renew_taskpack(pose)
         minmover.apply(pose)
         mc_outer_refine.boltzmann(pose)
+    
     jd.output_decoy(pose)
 print "done"
 
