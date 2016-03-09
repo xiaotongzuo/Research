@@ -11,6 +11,8 @@
     
     --Xiaotong Zuo, Feb. 24'''
 # import
+import time
+start=time.clock()
 from rosetta import *
 init(notebook=True)
 import random
@@ -110,6 +112,7 @@ def main(args):
             save_pose.assign(pose)   # store last accepted pose
             torsion_mover(pose)
             score_pose(pose)
+        # pose.dump...
     # phi psi write to a file
         for resi_num in range(1,tot_resi+1):
             phi=pose.phi(resi_num)
@@ -120,3 +123,5 @@ def main(args):
 
 if __name__=='__main__':
     main(sys.argv)
+end=time.clock()
+print end-start
