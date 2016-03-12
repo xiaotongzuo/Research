@@ -140,8 +140,6 @@ while not jd.job_complete:
         minmover.apply(pose)
         mc_outer_refine.boltzmann(pose)
     jd.output_decoy(pose)
-print "done"
-
 
 
 
